@@ -8,12 +8,12 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 const { width, height } = Dimensions.get('screen');
 
-export default function KanjiDefinition(props) {
+export default function Definition(props) {
     const [item, setItem] = React.useState({});
     const [meanings, setMeanings] = React.useState("");
     const [examples, setExamples] = React.useState([]);
+    const [jlpt, setJlpt] = React.useState("");
     const [loading, setLoading] = React.useState(false);
-    const [strokes, setStrokes] = React.useState(false);
 
     const JishoApi = require('unofficial-jisho-api');
     const jisho = new JishoApi();
@@ -26,13 +26,13 @@ export default function KanjiDefinition(props) {
 
     const performSearch = async () => {
         setLoading(true);
-        let data = await jisho.searchForKanji(route.params.word);
+        let data = await jisho.searchForPhrase(route.params.word);
         let data2 = await jisho.searchForExamples(route.params.word);
 
         const item = JSON.parse(JSON.stringify(data, null, 2));
         const examples = JSON.parse(JSON.stringify(data2, null, 2));
 
-        const spltMeaning = item.meaning.split(",");
+        const spltMeaning = item.data[0].senses[0].english_definitions;
         if (spltMeaning.length > 3) {
             var newMeaning = "";
             for (var i = 0; i < 3; i++) {
@@ -42,10 +42,14 @@ export default function KanjiDefinition(props) {
             setMeanings(newMeaning);
         }
         else {
-            setMeanings(item.meaning);
+            setMeanings(spltMeaning.join(", "));
         }
 
-        setItem(item);
+        if (item.data[0].jlpt.length > 0) {
+            setJlpt(item.data[0].jlpt[0].toUpperCase());
+        }
+
+        setItem(item.data[0]);
         setExamples(examples.results);
         setLoading(false)
     }
@@ -54,22 +58,18 @@ export default function KanjiDefinition(props) {
         return (
             <Card style={styles.card} key={index}>
                 <Card.Content>
-                    <Title style={{ fontSize: 30, textAlign: 'center' }}>{example.example}</Title>
-                    <Paragraph style={{ fontSize: 15, textAlign: 'center' }}>{example.reading}</Paragraph>
-                    <Paragraph style={{ fontSize: 15, textAlign: 'center' }}>{example.meaning}</Paragraph>
+                    <Paragraph style={{ fontSize: 15, textAlign: 'center' }}>{example.parts_of_speech}</Paragraph>
+                    <Title style={{ fontSize: 30, textAlign: 'center' }}>{example.english_definitions.join(", ")}</Title>
                 </Card.Content>
             </Card>
         );
     }
 
-    const showModal = () => setStrokes(true);
-    const hideModal = () => setStrokes(false);
-
     return (
         <Block safe flex style={{ backgroundColor: '#fff' }}>
             <GorgeousHeader
-                title="Kanji Definition"
-                subtitle="Definition, Stroke Order and Examples"
+                title="Word Definition"
+                subtitle="Definition and Examples"
                 menuImageSource
                 menuImageOnPress={() => navigation.goBack()}
                 searchBarStyle={{ width: 0, height: 0 }}
@@ -85,42 +85,21 @@ export default function KanjiDefinition(props) {
                     />
                 ) : (
                         <Block style={styles.container}>
-                            <View style={{ flexDirection: "row" }}>
-                                <View style={{ flex: 1 }}>
-                                    <Text style={{ justifyContent: 'flex-start', fontSize: 150 }}>{route.params.word}</Text>
-                                </View>
-                                <View style={{ flex: 1 }}>
-                                    <Text style={{ justifyContent: 'flex-end', fontSize: 35 }}>{meanings}</Text>
-                                    {item.kunyomi != null ? (<Text style={{ justifyContent: 'flex-end', fontSize: 25, marginTop: 10 }}>{item.kunyomi[0]}</Text>) : (<Text />)}
-                                </View>
-                            </View>
-                            <View style={{ flexDirection: "row", marginTop: 10 }}>
-                                <View style={{ flex: 1 }}>
-                                    <Text style={{ justifyContent: 'flex-start', fontSize: 20, marginLeft: 25 }}>{item.strokeCount} strokes</Text>
-                                </View>
-                                <View style={{ flex: 1 }}>
-                                    <Text style={{ justifyContent: 'flex-end', fontSize: 20 }}>JLPT {item.jlptLevel}</Text>
-                                </View>
-                            </View>
+                            <Text style={{ fontSize: 100 }}>{route.params.word}</Text>
+                            <Text style={{ fontSize: 25, marginLeft: 10, marginTop: 10 }}>{meanings}</Text>
+                            {item.japanese != null ? (<Text style={{ fontSize: 25, marginTop: 10, marginLeft: 10 }}>{item.japanese[0].reading}</Text>) : (<Text />)}
+                            <Text style={{ justifyContent: 'flex-end', fontSize: 20,marginTop: 10, marginLeft: 10 }}>{jlpt}</Text>
                             <View style={{ flexDirection: "row", marginTop: 20 }}>
-                                <Button round color="success" shadowless>Add to Word Bank</Button>
-                                <Button round color="theme" shadowless onPress={showModal}>Stroke Order</Button>
+                                <Button round color="success" shadowless size="large">Add to Word Bank</Button>
                             </View>
                             <Block flex space="between" style={styles.cards}>
                                 {JSON.stringify(item) != "{}" ? (
-                                    item.kunyomiExamples.map((value, index) => {
+                                    item.senses.map((value, index) => {
                                         return (makeExampleCard(value, index))
                                     })
                                 ) : <Text />}
                             </Block>
                             <Button round color="info" shadowless size="large" onPress={() => { navigation.navigate("Examples", { examples: examples }) }}>Show Examples</Button>
-                            <Provider>
-                                <Portal>
-                                    <Modal visible={strokes} onDismiss={hideModal} contentContainerStyle={styles.modal}>
-                                        <Image source={{ uri: item.strokeOrderGifUri }} style={styles.gif}/>
-                                    </Modal>
-                                </Portal>
-                            </Provider>
                         </Block>
                     )}
             </ScrollView>
