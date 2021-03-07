@@ -27,11 +27,16 @@ export default function Search(props) {
     }
 
     const openDefinition = (value) => {
+        var searchQuery = value["slug"].replace("-1", "");
+        if (/[a-zA-Z0-9]/.test(searchQuery)) {
+            searchQuery = value["japanese"][0]["reading"];
+        }
+
         if (value["slug"].length == 1) {
-            navigation.navigate("KanjiDefinition", { word: value["slug"].replace("-1", "") });
+            navigation.navigate("KanjiDefinition", { word: searchQuery });
         }
         else {
-            navigation.navigate("Definition", { word: value["slug"].replace("-1", "") })
+            navigation.navigate("Definition", { word: searchQuery })
         }
     }
 
@@ -61,14 +66,31 @@ export default function Search(props) {
         else {
             return (
                 results["data"].map((value, i) => (
-                    <ListItem key={i} bottomDivider onPress={() => { openDefinition(value) }}>
-                        <ListItem.Content>
-                            <ListItem.Title style={{ fontSize: 20 }}>{value["slug"].replace("-1", "")}</ListItem.Title>
-                            <ListItem.Subtitle style={{ marginTop: 5, fontSize: 15 }}>{value["japanese"][0]["reading"]}</ListItem.Subtitle>
-                        </ListItem.Content>
-                        <ListItem.Chevron />
-                    </ListItem>
+                    makeListItem(value, i)
                 ))
+            );
+        }
+    }
+
+    const makeListItem = (value, i) => {
+        if (value["japanese"][0]["reading"] === undefined) {
+            return null;
+        }
+        else {
+            return (
+                <ListItem key={i} bottomDivider onPress={() => { openDefinition(value) }}>
+                    <ListItem.Content>
+                        {/[a-zA-Z0-9]/.test(value["slug"].replace("-1", "")) ? (
+                            <ListItem.Title style={{ fontSize: 20 }}>{value["japanese"][0]["reading"]}</ListItem.Title>
+                        ) : (
+                                <ListItem.Title style={{ fontSize: 20 }}>{value["slug"].replace("-1", "")}</ListItem.Title>
+                            )}
+                        {/[a-zA-Z0-9]/.test(value["slug"].replace("-1", "")) ? null : (
+                            <ListItem.Subtitle style={{ marginTop: 5, fontSize: 15 }}>{value["japanese"][0]["reading"]}</ListItem.Subtitle>
+                        )}
+                    </ListItem.Content>
+                    <ListItem.Chevron />
+                </ListItem>
             );
         }
     }
@@ -81,7 +103,7 @@ export default function Search(props) {
                 menuImageSource={require("../../assets/hamburger_menu.png")}
                 menuImageStyle={styles.menu}
                 menuImageOnPress={() => navigation.openDrawer()}
-                searchBarStyle={{width: 0, height: 0}}
+                searchBarStyle={{ width: 0, height: 0 }}
             />
 
             <Block style={{ padding: theme.SIZES.BASE, paddingBottom: 0, }}>

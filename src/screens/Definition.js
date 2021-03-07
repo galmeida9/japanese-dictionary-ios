@@ -85,10 +85,12 @@ export default function Definition(props) {
                     />
                 ) : (
                         <Block style={styles.container}>
-                            <Text style={{ fontSize: 100 }}>{route.params.word}</Text>
+                            <Text style={{ fontSize: width / (route.params.word).length - 10, marginLeft: 10 }}>{route.params.word}</Text>
                             <Text style={{ fontSize: 25, marginLeft: 10, marginTop: 10 }}>{meanings}</Text>
-                            {item.japanese != null ? (<Text style={{ fontSize: 25, marginTop: 10, marginLeft: 10 }}>{item.japanese[0].reading}</Text>) : (<Text />)}
-                            <Text style={{ justifyContent: 'flex-end', fontSize: 20,marginTop: 10, marginLeft: 10 }}>{jlpt}</Text>
+                            {item.japanese != null && route.params.word != item.japanese[0].reading ? (
+                                <Text style={{ fontSize: 25, marginTop: 10, marginLeft: 10 }}>{item.japanese[0].reading}</Text>
+                            ) : null}
+                            <Text style={{ justifyContent: 'flex-end', fontSize: 20, marginTop: 10, marginLeft: 10 }}>{jlpt}</Text>
                             <View style={{ flexDirection: "row", marginTop: 20 }}>
                                 <Button round color="success" shadowless size="large">Add to Word Bank</Button>
                             </View>
@@ -133,13 +135,13 @@ const styles = StyleSheet.create({
         position: 'absolute',
         padding: 20,
         top: 100,
-        width: width-40,
-        height: height-500
+        width: width - 40,
+        height: height - 500
     },
     gif: {
         resizeMode: 'stretch',
-        width: width-40,
-        height: height-500
+        width: width - 40,
+        height: height - 500
     }
 });
 
