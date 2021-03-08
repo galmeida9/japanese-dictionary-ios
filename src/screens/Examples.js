@@ -27,7 +27,8 @@ export default function Examples(props) {
             <GorgeousHeader
                 title="Examples"
                 subtitle="User case examples of the searched word"
-                menuImageSource
+                menuImageSource={require("../../assets/back.png")}
+                menuImageStyle={styles.back}
                 menuImageOnPress={() => navigation.goBack()}
                 searchBarStyle={{ width: 0, height: 0 }}
                 subtitleTextStyle={{ paddingBottom: 10 }}
@@ -70,5 +71,9 @@ const styles = StyleSheet.create({
         marginTop: height / 4,
         fontSize: 20
     },
+    back: {
+        height: 30,
+        width: 30,
+    }
 });
 

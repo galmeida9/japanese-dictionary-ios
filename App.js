@@ -15,14 +15,12 @@ export default function App() {
     // const [currTheme, setCurrTheme] = React.useState(lightTheme);
 
     useEffect(() => {
-        writeWords();
         readFile();
     }, [])
 
     const readFile = async () => {
         try {
             let newWords = await AsyncStorage.getItem("words");
-            console.log(newWords)
 
             if (newWords !== null) {
                 setWords(JSON.parse(newWords));

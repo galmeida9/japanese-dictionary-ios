@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, StyleSheet, ScrollView, Platform, TouchableOpacity } from 'react-native';
+import { Dimensions, StyleSheet, ScrollView } from 'react-native';
 import { Text, Block, Input } from 'galio-framework';
 import theme from '../theme';
 import { ListItem } from 'react-native-elements'
@@ -22,6 +22,7 @@ export default function Search(props) {
         setLoading(true);
         jisho.searchForPhrase(query.toLowerCase()).then((data) => {
             setResults(data);
+            console.log(data)
             setLoading(false);
         });
     }
@@ -115,6 +116,7 @@ export default function Search(props) {
                     onChangeText={(text) => { setQuery(text); }}
                     returnKeyType={'search'}
                     onSubmitEditing={searchDict}
+                    clearButtonMode="always"
                 />
             </Block>
 

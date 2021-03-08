@@ -93,7 +93,8 @@ export default function Definition(props) {
                 <GorgeousHeader
                     title="Word Definition"
                     subtitle="Definition and Examples"
-                    menuImageSource
+                    menuImageSource={require("../../assets/back.png")}
+                    menuImageStyle={styles.back}
                     menuImageOnPress={() => navigation.goBack()}
                     searchBarStyle={{ width: 0, height: 0 }}
                     subtitleTextStyle={{ paddingBottom: 10 }}
@@ -178,6 +179,10 @@ const styles = StyleSheet.create({
         resizeMode: 'stretch',
         width: width - 40,
         height: height - 500
+    },
+    back: {
+        height: 30,
+        width: 30,
     }
 });
 
