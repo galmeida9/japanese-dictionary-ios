@@ -1,11 +1,11 @@
 import React from 'react';
-import { Dimensions, StyleSheet, ScrollView } from 'react-native';
+import { Dimensions, StyleSheet, ScrollView, Text } from 'react-native';
 import { Block } from 'galio-framework';
 import theme from '../theme';
 import GorgeousHeader from "react-native-gorgeous-header";
 import { Card, Title, Paragraph } from 'react-native-paper';
 
-const { width } = Dimensions.get('screen');
+const { width, height } = Dimensions.get('screen');
 
 export default function Examples(props) {
     const { navigation, route } = props;
@@ -35,9 +35,11 @@ export default function Examples(props) {
 
             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
                 <Block style={styles.container}>
-                    {route.params.examples.map((value, index) => {
-                        return (makeExtraExampleCard(value, index));
-                    })}
+                    {route.params.examples.length > 0 ? (
+                        route.params.examples.map((value, index) => {
+                            return (makeExtraExampleCard(value, index));
+                        })
+                    ) : (<Text style={styles.noResults}>No Examples Found</Text>)}
                 </Block>
             </ScrollView>
         </Block>
@@ -62,6 +64,11 @@ const styles = StyleSheet.create({
         backgroundColor: theme.COLORS.WHITE,
         width: width - theme.SIZES.BASE * 2,
         marginVertical: theme.SIZES.BASE * 0.875,
+    },
+    noResults: {
+        textAlign: 'center',
+        marginTop: height / 4,
+        fontSize: 20
     },
 });
 

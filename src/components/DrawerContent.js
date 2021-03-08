@@ -51,7 +51,7 @@ export default function DrawerContent(props) {
                                     color={theme.COLORS.ICON}
                                 />
                             )}
-                            onPress={() => {  }}
+                            onPress={() => { props.navigation.navigate('Bank') }}
                         />
                         <DrawerItem
                             label="Practice"

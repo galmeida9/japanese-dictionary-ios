@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
-import { View, Dimensions, StyleSheet, ScrollView, Image } from 'react-native';
+import React, { useEffect, useContext } from 'react';
+import { View, Dimensions, StyleSheet, ScrollView } from 'react-native';
 import { Text, Block, Button } from 'galio-framework';
 import theme from '../theme';
 import GorgeousHeader from "react-native-gorgeous-header";
-import { Card, Title, Paragraph, Modal, Portal, Provider } from 'react-native-paper';
+import { Card, Title, Paragraph } from 'react-native-paper';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { Root, Toast } from 'popup-ui';
+import WordBankContext from '../components/WordBankContext';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -14,14 +16,17 @@ export default function Definition(props) {
     const [examples, setExamples] = React.useState([]);
     const [jlpt, setJlpt] = React.useState("");
     const [loading, setLoading] = React.useState(false);
+    const [wordBank, setWordBank] = React.useState(false);
 
     const JishoApi = require('unofficial-jisho-api');
     const jisho = new JishoApi();
 
     const { navigation, route } = props;
+    const context = useContext(WordBankContext);
 
     useEffect(() => {
         performSearch();
+        getWords();
     }, [])
 
     const performSearch = async () => {
@@ -54,6 +59,23 @@ export default function Definition(props) {
         setLoading(false)
     }
 
+    const getWords = async () => {
+        if (context.state.japanese.filter(el => route.params.word == el.kanji).length > 0) {
+            setWordBank(true);
+        }
+    }
+
+    const addToWordBank = () => {
+        let word = {
+            "kanji": route.params.word,
+            "hira": item.japanese[0].reading,
+            "english": item.senses[0].english_definitions[0]
+        }
+
+        context.addValue(word);
+        setWordBank(true);
+    }
+
     const makeExampleCard = (example, index) => {
         return (
             <Card style={styles.card} key={index}>
@@ -66,46 +88,60 @@ export default function Definition(props) {
     }
 
     return (
-        <Block safe flex style={{ backgroundColor: '#fff' }}>
-            <GorgeousHeader
-                title="Word Definition"
-                subtitle="Definition and Examples"
-                menuImageSource
-                menuImageOnPress={() => navigation.goBack()}
-                searchBarStyle={{ width: 0, height: 0 }}
-                subtitleTextStyle={{ paddingBottom: 10 }}
-            />
+        <Root>
+            <Block safe flex style={{ backgroundColor: '#fff' }}>
+                <GorgeousHeader
+                    title="Word Definition"
+                    subtitle="Definition and Examples"
+                    menuImageSource
+                    menuImageOnPress={() => navigation.goBack()}
+                    searchBarStyle={{ width: 0, height: 0 }}
+                    subtitleTextStyle={{ paddingBottom: 10 }}
+                />
 
-            <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-                {loading ? (
-                    <Spinner
-                        visible={loading}
-                        textContent={'Loading...'}
-                        textStyle={styles.spinnerTextStyle}
-                    />
-                ) : (
-                        <Block style={styles.container}>
-                            <Text style={{ fontSize: width / (route.params.word).length - 10, marginLeft: 10 }}>{route.params.word}</Text>
-                            <Text style={{ fontSize: 25, marginLeft: 10, marginTop: 10 }}>{meanings}</Text>
-                            {item.japanese != null && route.params.word != item.japanese[0].reading ? (
-                                <Text style={{ fontSize: 25, marginTop: 10, marginLeft: 10 }}>{item.japanese[0].reading}</Text>
-                            ) : null}
-                            <Text style={{ justifyContent: 'flex-end', fontSize: 20, marginTop: 10, marginLeft: 10 }}>{jlpt}</Text>
-                            <View style={{ flexDirection: "row", marginTop: 20 }}>
-                                <Button round color="success" shadowless size="large">Add to Word Bank</Button>
-                            </View>
-                            <Block flex space="between" style={styles.cards}>
-                                {JSON.stringify(item) != "{}" ? (
-                                    item.senses.map((value, index) => {
-                                        return (makeExampleCard(value, index))
-                                    })
-                                ) : <Text />}
+                <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+                    {loading ? (
+                        <Spinner
+                            visible={loading}
+                            textContent={'Loading...'}
+                            textStyle={styles.spinnerTextStyle}
+                        />
+                    ) : (
+                            <Block style={styles.container}>
+                                <Text style={{ fontSize: width / (route.params.word).length - 10, marginLeft: 10 }}>{route.params.word}</Text>
+                                <Text style={{ fontSize: 25, marginLeft: 10, marginTop: 10 }}>{meanings}</Text>
+                                {item.japanese != null && route.params.word != item.japanese[0].reading ? (
+                                    <Text style={{ fontSize: 25, marginTop: 10, marginLeft: 10 }}>{item.japanese[0].reading}</Text>
+                                ) : null}
+                                <Text style={{ justifyContent: 'flex-end', fontSize: 20, marginTop: 10, marginLeft: 10 }}>{jlpt}</Text>
+                                <View style={{ flexDirection: "row", marginTop: 20 }}>
+                                    {wordBank ? (
+                                        <Button round color="success" shadowless size="large">In Word Bank</Button>
+                                    ) : (
+                                            <Button round color="warning" shadowless size="large" onPress={() => {
+                                                addToWordBank();
+                                                Toast.show({
+                                                    title: 'Added to Word Bank',
+                                                    text: 'This word was added to your Word Bank.',
+                                                    color: '#2ecc71',
+                                                    timing: 4000
+                                                });
+                                            }}>Add to Word Bank</Button>
+                                        )}
+                                </View>
+                                <Block flex space="between" style={styles.cards}>
+                                    {JSON.stringify(item) != "{}" ? (
+                                        item.senses.map((value, index) => {
+                                            return (makeExampleCard(value, index))
+                                        })
+                                    ) : <Text />}
+                                </Block>
+                                <Button round color="info" shadowless size="large" onPress={() => { navigation.navigate("Examples", { examples: examples }) }}>Show Examples</Button>
                             </Block>
-                            <Button round color="info" shadowless size="large" onPress={() => { navigation.navigate("Examples", { examples: examples }) }}>Show Examples</Button>
-                        </Block>
-                    )}
-            </ScrollView>
-        </Block>
+                        )}
+                </ScrollView>
+            </Block>
+        </Root>
     )
 }
 
