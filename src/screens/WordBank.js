@@ -73,7 +73,7 @@ export default function WordBank(props) {
             Toast.show({
                 title: 'Removed word from Word Bank',
                 text: 'This word was been removed from your Word Bank.',
-                color: '#2ecc71',
+                color: theme.COLORS.SUCCESS,
                 timing: 4000
             });
         }

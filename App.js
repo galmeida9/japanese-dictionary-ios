@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
-import Home from './src/screens/Home';
-import Bank from './src/screens/Bank';
+import Home from './src/components/Home';
+import Bank from './src/components/Bank';
+import DuolingoLogin from './src/screens/DuolingoLogin';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import DrawerContent from './src/components/DrawerContent';
@@ -79,6 +80,7 @@ export default function App() {
                 <Drawer.Navigator initialRouteName="Dictionary" drawerContent={(props) => <DrawerContent {...props} />}>
                     <Drawer.Screen name="Dictionary" component={Home} />
                     <Drawer.Screen name="Bank" component={Bank} />
+                    <Drawer.Screen name="DuolingoLogin" component={DuolingoLogin} />
                 </Drawer.Navigator>
             </NavigationContainer>
         </WordBankContext.Provider>

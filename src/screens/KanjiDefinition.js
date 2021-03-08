@@ -136,7 +136,7 @@ export default function KanjiDefinition(props) {
                                                 Toast.show({
                                                     title: 'Added to Word Bank',
                                                     text: 'This word was added to your Word Bank.',
-                                                    color: '#2ecc71',
+                                                    color: theme.COLORS.SUCCESS,
                                                     timing: 4000
                                                 });
                                             }}>Add to Word Bank</Button>

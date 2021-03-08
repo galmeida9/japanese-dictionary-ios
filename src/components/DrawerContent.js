@@ -85,7 +85,7 @@ export default function DrawerContent(props) {
                                     color={theme.COLORS.ICON}
                                 />
                             )}
-                            onPress={() => {  }}
+                            onPress={() => { props.navigation.navigate('DuolingoLogin') }}
                         />
                     </Drawer.Section>
                 </View>
