@@ -117,7 +117,7 @@ export default function KanjiDefinition(props) {
                             <Provider>
                                 <Portal>
                                     <Modal visible={strokes} onDismiss={hideModal} contentContainerStyle={styles.modal}>
-                                        <Image source={{ uri: item.strokeOrderGifUri }} style={styles.gif}/>
+                                        {item.strokeOrderGifUri != null ? (<Image source={{ uri: item.strokeOrderGifUri }} style={styles.gif}/>) : null}
                                     </Modal>
                                 </Portal>
                             </Provider>

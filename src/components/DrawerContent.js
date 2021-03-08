@@ -30,27 +30,63 @@ export default function DrawerContent(props) {
                 <View style={styles.drawerContent}>
                     <Drawer.Section style={styles.drawerSection}>
                         <DrawerItem
-                            label="Home"
+                            label="Dictionary"
                             icon={() => (
                                 <Icon
-                                    name="home"
-                                    family="feather"
+                                    name="language"
+                                    family="font-awesome"
                                     size={theme.SIZES.BASE}
                                     color={theme.COLORS.ICON}
                                 />
                             )}
                             onPress={() => { props.navigation.navigate('Dictionary') }}
                         />
+                        <DrawerItem
+                            label="Word Bank"
+                            icon={() => (
+                                <Icon
+                                    name="database"
+                                    family="font-awesome"
+                                    size={theme.SIZES.BASE}
+                                    color={theme.COLORS.ICON}
+                                />
+                            )}
+                            onPress={() => {  }}
+                        />
+                        <DrawerItem
+                            label="Practice"
+                            icon={() => (
+                                <Icon
+                                    name="pencil"
+                                    family="font-awesome"
+                                    size={theme.SIZES.BASE}
+                                    color={theme.COLORS.ICON}
+                                />
+                            )}
+                            onPress={() => {  }}
+                        />
                     </Drawer.Section>
                     <Drawer.Section title="Settings">
                         <TouchableRipple>
                             <View style={styles.preference}>
                                 <Text>Dark Theme</Text>
-                                <View pointerEvents="none">
+                                <View>
                                     <Switch value={paperTheme.dark} />
                                 </View>
                             </View>
                         </TouchableRipple>
+                        <DrawerItem
+                            label="Duolingo Login"
+                            icon={() => (
+                                <Icon
+                                    name="sign-in"
+                                    family="font-awesome"
+                                    size={theme.SIZES.BASE}
+                                    color={theme.COLORS.ICON}
+                                />
+                            )}
+                            onPress={() => {  }}
+                        />
                     </Drawer.Section>
                 </View>
             </DrawerContentScrollView>
