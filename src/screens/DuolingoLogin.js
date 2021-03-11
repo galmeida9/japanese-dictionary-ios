@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Dimensions, StyleSheet, ScrollView, Image, PlatformColor, useColorScheme } from 'react-native';
+import { Dimensions, StyleSheet, ScrollView, Image, PlatformColor, useColorScheme, Text } from 'react-native';
 import { Block, Input, Button } from 'galio-framework';
 import theme from '../theme';
 import GorgeousHeader from "react-native-gorgeous-header";
@@ -14,8 +14,6 @@ export default function DuolingoLogin(props) {
     const [username, setUsername] = React.useState("");
     const [password, setPasswords] = React.useState("");
     const [progress, setProgress] = React.useState(0);
-    const [totalWords, setTotalWords] = React.useState(0);
-    const [totalImp, setTotalImp] = React.useState(-1);
     const [loading, setLoading] = React.useState(false);
 
     const { navigation } = props;
@@ -34,12 +32,11 @@ export default function DuolingoLogin(props) {
                 Toast.show({
                     title: 'Login Successfully',
                     text: 'Finding your Duolingo learned words and importing them.',
-                    color: theme.COLORS.SUCCESS,
+                    color: PlatformColor("systemGreen"),
                     timing: 4000
                 });
 
                 duo.getLearnedWords().then((words) => {
-                    setTotalWords(words.length);
                     addDuoWords(words);
                 })
             }
@@ -47,7 +44,7 @@ export default function DuolingoLogin(props) {
                 Toast.show({
                     title: 'Failed to Login',
                     text: 'Please check your username and password, and try again.',
-                    color: theme.COLORS.ERROR,
+                    color: PlatformColor("systemRed"),
                     timing: 4000
                 });
             }
@@ -57,7 +54,7 @@ export default function DuolingoLogin(props) {
     const addDuoWords = async (list) => {
         setLoading(true);
         let imported = 0;
-        for (let i = 0; i < list.length; i++) {
+        for (let i = list.length-1; i >= 0; i--) {
             let word = list[i];
             if (!context.checkWord(word)) {
                 if (word.length == 1) {
@@ -92,17 +89,16 @@ export default function DuolingoLogin(props) {
                 }
             }
 
-            setProgress(Math.floor(i / (list.length - 1) * 100));
+            setProgress(100-Math.floor(i / (list.length - 1) * 100));
         }
 
-        setTotalImp(imported);
         setLoading(false);
 
         Popup.show({
             type: 'Success',
             title: 'Import complete',
             button: true,
-            textBody: `Found ${totalWords} and imported ${totalImp} new words to your Word Bank`,
+            textBody: `Found ${list.length} and imported ${imported} new words to your Word Bank`,
             buttonText: 'Ok',
             callback: () => Popup.hide()
         })
@@ -112,7 +108,7 @@ export default function DuolingoLogin(props) {
         <Root>
             <Block safe flex style={{ backgroundColor: PlatformColor("systemBackground") }}>
                 <GorgeousHeader
-                    title="Duoling Login"
+                    title="Duolingo Login"
                     titleTextStyle={{ color: PlatformColor("label"), fontSize: 46, fontWeight: "bold" }}
                     subtitleTextStyle={{ color: PlatformColor("secondaryLabel") }}
                     menuImageSource={dark ? require("../../assets/menu_dark.png") : require("../../assets/hamburger_menu.png")}
@@ -155,7 +151,10 @@ export default function DuolingoLogin(props) {
                             onSubmitEditing={login}
                             autoCapitalize='none'
                         />
-                        <Button round color="success" shadowless size="large" onPress={login}>Log In</Button>
+                        <Button round color={dark ? "rgb(48, 209, 88)" : "rgb(52, 199, 89)"} shadowless size="large" onPress={login}>Log In</Button>
+                        <Text style={{ color: PlatformColor("label"), textAlign: 'center', marginTop: 10 }}>
+                            This process can take a while if a lot of words need to be imported
+                        </Text>
                     </Block>
                 </ScrollView>
             </Block>

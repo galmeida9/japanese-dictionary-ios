@@ -1,8 +1,9 @@
 {
   "expo": {
-    "name": "japanese-dictionary-ios",
-    "slug": "japanese-dictionary-ios",
+    "name": "Japanese Dictionary iOS",
+    "slug": "Japanese-Dictionary-iOS",
     "version": "1.0.0",
+    "description": "Japanese dictionary app with word bank to store all your learned words and a practice exercise to help memorize them. There is also the possibility of importing your word bank from Duolingo and Dark Mode is synched to your OS setting. You can check the code for this project at: https://github.com/galmeida9/japanese-dictionary-ios",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -17,7 +18,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gabriel.japaneseDict"
     },
     "android": {
       "adaptiveIcon": {

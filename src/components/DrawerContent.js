@@ -5,8 +5,6 @@ import {
     Caption,
     Drawer,
     Text,
-    TouchableRipple,
-    Switch
 } from 'react-native-paper';
 import {
     DrawerContentScrollView,
@@ -69,19 +67,6 @@ export default function DrawerContent(props) {
                     </Drawer.Section>
                     <Drawer.Section>
                         <Text style={{ marginLeft: 18, marginTop: 20, color: PlatformColor("label") }}>Settings</Text>
-                        {/* <TouchableRipple>
-                            <View style={styles.preference}>
-                                <Text>Dark Theme</Text>
-                                <View>
-                                    <Switch
-                                        style={{ marginTop: -8 }}
-                                        color={theme.COLORS.INFO}
-                                        value={context.state.dark}
-                                        onValueChange={() => { context.setTheme(!context.state.dark); setDark(!dark) }}
-                                    />
-                                </View>
-                            </View>
-                        </TouchableRipple> */}
                         <DrawerItem
                             label="Duolingo Login"
                             icon={() => (
@@ -103,14 +88,14 @@ export default function DrawerContent(props) {
                     label="Made by Gabriel Almeida"
                     icon={() => (
                         <Icon
-                            name="copyright"
+                            name="heart"
                             family="font-awesome"
                             size={theme.SIZES.BASE}
                             color={PlatformColor("label")}
                         />
                     )}
                     onPress={() => Linking.openURL('http://bit.ly/Gabriel-Almeida')}
-                    labelStyle={{ color: PlatformColor("label") }}
+                    labelStyle={{ color: PlatformColor("label"), width: 200 }}
                 />
             </Drawer.Section>
         </View>

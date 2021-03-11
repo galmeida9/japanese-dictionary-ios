@@ -118,7 +118,7 @@ export default function WordBank(props) {
                         value={query}
                         autoCapitalize='none'
                     />
-                    <Button round color="info" shadowless size="small" onPress={() => { copyWords(); setQuery("") }}>Clear</Button>
+                    <Button round color={dark ? "rgb(10, 132, 255)" : "rgb(0, 122, 255)"} shadowless size="small" onPress={() => { copyWords(); setQuery("") }}>Clear</Button>
                 </Block>
 
                 <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
@@ -143,7 +143,16 @@ export default function WordBank(props) {
                                 }
                             })}
                             {displayed.length > 50 ? (
-                                <Button round color="info" shadowless size="large" style={{ marginTop: 20 }} onPress={() => { setMaxItems(maxItems + 50) }}>Load More</Button>
+                                <Button
+                                    round
+                                    color={dark ? "rgb(10, 132, 255)" : "rgb(0, 122, 255)"}
+                                    shadowless
+                                    size="large"
+                                    style={{ marginTop: 20 }}
+                                    onPress={() => { setMaxItems(maxItems + 50) }}
+                                >
+                                    Load More
+                                </Button>
                             ) : null}
                             <Text style={{ textAlign: 'center', marginTop: 10, color: PlatformColor("label") }}>{context.state.length} words</Text>
                         </Block>

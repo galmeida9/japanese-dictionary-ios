@@ -27,7 +27,7 @@ export default function PracticeLevel(props) {
                 title="Practice"
                 titleTextStyle={{ color: PlatformColor("label"), fontSize: 46, fontWeight: "bold" }}
                 subtitle="Choose the number of words to train"
-                subtitleTextStyle={{ color: PlatformColor("secondaryLabel")}}
+                subtitleTextStyle={{ color: PlatformColor("secondaryLabel") }}
                 menuImageSource={dark ? require("../../assets/menu_dark.png") : require("../../assets/hamburger_menu.png")}
                 menuImageStyle={styles.menu}
                 menuImageOnPress={() => navigation.openDrawer()}
@@ -40,10 +40,15 @@ export default function PracticeLevel(props) {
                         {level.map((value, i) => {
                             if (context.state.length > value) {
                                 return (
-                                    <ListItem key={i} bottomDivider onPress={() => { navigation.navigate("PracticeScreen", { level: value }) }}>
+                                    <ListItem
+                                        key={i}
+                                        bottomDivider
+                                        onPress={() => { navigation.navigate("PracticeScreen", { level: value }) }}
+                                        containerStyle={{ backgroundColor: PlatformColor("systemBackground") }}
+                                    >
                                         <ListItem.Content>
-                                            <ListItem.Title style={{ fontSize: 20 }}>{value}</ListItem.Title>
-                                            <ListItem.Subtitle style={{ marginTop: 5, fontSize: 15 }}>Practice {value} words</ListItem.Subtitle>
+                                            <ListItem.Title style={{ fontSize: 20, color: PlatformColor("label") }}>{value}</ListItem.Title>
+                                            <ListItem.Subtitle style={{ marginTop: 5, fontSize: 15, color: PlatformColor("label") }}>Practice {value} words</ListItem.Subtitle>
                                         </ListItem.Content>
                                         <ListItem.Chevron />
                                     </ListItem>

@@ -122,9 +122,9 @@ export default function Definition(props) {
                                 <Text style={{ justifyContent: 'flex-end', fontSize: 20, marginTop: 10, marginLeft: 10, color: PlatformColor("label") }}>{jlpt}</Text>
                                 <View style={{ flexDirection: "row", marginTop: 20 }}>
                                     {wordBank ? (
-                                        <Button round color="success" shadowless size="large">In Word Bank</Button>
+                                        <Button round color={dark ? "rgb(48, 209, 88)" : "rgb(52, 199, 89)"} shadowless size="large">In Word Bank</Button>
                                     ) : (
-                                            <Button round color="warning" shadowless size="large" onPress={() => {
+                                            <Button round color={dark ? "rgb(255, 159, 10)" : "rgb(255, 159, 0)"} shadowless size="large" onPress={() => {
                                                 addToWordBank();
                                                 Toast.show({
                                                     title: 'Added to Word Bank',
@@ -144,7 +144,7 @@ export default function Definition(props) {
                                 </Block>
                                 <Button
                                     round
-                                    color="info"
+                                    color={dark ? "rgb(10, 132, 255)" : "rgb(0, 122, 255)"}
                                     shadowless
                                     size="large"
                                     onPress={() => { navigation.navigate("Examples", { examples: examples }) }}>
