@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Dimensions, StyleSheet, ScrollView } from 'react-native';
+import { Dimensions, StyleSheet, ScrollView, Text, PlatformColor, useColorScheme } from 'react-native';
 import { Block, Input, Button, Icon } from 'galio-framework';
 import theme from '../theme';
 import { ListItem } from 'react-native-elements'
@@ -15,12 +15,17 @@ export default function WordBank(props) {
     const [displayed, setDisplayed] = React.useState([]);
     const [edit, setEdit] = React.useState(false);
     const [reload, setReload] = React.useState(false);
+    const [maxItems, setMaxItems] = React.useState(50);
 
     const { navigation } = props;
-    const isFocused = useIsFocused()
+
+    const dark = useColorScheme() === "dark";
+
+    const isFocused = useIsFocused();
     const context = useContext(WordBankContext);
 
     useEffect(() => {
+        setMaxItems(50);
         copyWords();
         setReload(false);
         searchWord();
@@ -28,7 +33,7 @@ export default function WordBank(props) {
 
     const copyWords = () => {
         let list = [];
-        context.state.japanese.forEach((word) => {
+        context.state.forEach((word) => {
             list.push(word);
         });
 
@@ -49,7 +54,7 @@ export default function WordBank(props) {
     const searchWord = () => {
         let newQuery = query.toLowerCase();
         let newList = [];
-        context.state.japanese.forEach((word) => {
+        context.state.forEach((word) => {
             if (word.kanji.includes(newQuery) || (word.hira != null && word.hira.includes(newQuery)) || word.english.includes(newQuery)) {
                 newList.push(word);
             }
@@ -84,16 +89,18 @@ export default function WordBank(props) {
 
     return (
         <Root>
-            <Block safe flex style={{ backgroundColor: '#fff' }}>
+            <Block safe flex style={{ backgroundColor: PlatformColor("systemBackground") }}>
                 <GorgeousHeader
                     title="Word Bank"
+                    titleTextStyle={{ color: PlatformColor("label"), fontSize: 46, fontWeight: "bold" }}
                     subtitle="All your saved words"
-                    menuImageSource={require("../../assets/hamburger_menu.png")}
+                    subtitleTextStyle={{ color: PlatformColor("secondaryLabel") }}
+                    menuImageSource={dark ? require("../../assets/menu_dark.png") : require("../../assets/hamburger_menu.png")}
                     menuImageStyle={styles.menu}
                     menuImageOnPress={() => navigation.openDrawer()}
                     searchBarStyle={{ width: 0, height: 0 }}
                     profileImageSource={require("../../assets/edit.png")}
-                    profileImageStyle={{width: 77, height: 30}}
+                    profileImageStyle={{ width: 77, height: 30 }}
                     profileImageOnPress={() => { setEdit(!edit) }}
                 />
 
@@ -101,12 +108,15 @@ export default function WordBank(props) {
                     <Input
                         rounded
                         placeholder="Search Word Bank..."
-                        placeholderTextColor={theme.COLORS.INFO}
-                        style={{ borderColor: theme.COLORS.INFO, justifyContent: 'flex-start', width: width - 160 }}
+                        placeholderTextColor={PlatformColor("systemBlue")}
+                        style={{ borderColor: PlatformColor("systemBlue"), justifyContent: 'flex-start', width: width - 160 }}
+                        bgColor={PlatformColor("systemBackground")}
+                        color={PlatformColor("label")}
                         onChangeText={(text) => { setQuery(text) }}
                         returnKeyType={'search'}
                         onSubmitEditing={searchWord}
                         value={query}
+                        autoCapitalize='none'
                     />
                     <Button round color="info" shadowless size="small" onPress={() => { copyWords(); setQuery("") }}>Clear</Button>
                 </Block>
@@ -115,21 +125,27 @@ export default function WordBank(props) {
                     <Block style={styles.container}>
                         <Block flex>
                             {displayed.map((word, i) => {
-                                return (
-                                    <ListItem key={i} bottomDivider onPress={() => { listFunction(word) }}>
-                                        <ListItem.Content>
-                                            <ListItem.Title style={{ fontSize: 20 }}>{word["kanji"]}</ListItem.Title>
-                                            <ListItem.Subtitle style={{ marginTop: 5, fontSize: 15 }}>{word["english"]}</ListItem.Subtitle>
-                                        </ListItem.Content>
-                                        {edit ? (<Icon
-                                            name="delete"
-                                            family="AntDesign"
-                                            size={theme.SIZES.BASE}
-                                            color="#E90000"
-                                        />) : (<ListItem.Chevron />)}
-                                    </ListItem>
-                                )
+                                if (i < maxItems) {
+                                    return (
+                                        <ListItem key={i} bottomDivider onPress={() => { listFunction(word) }} containerStyle={{ backgroundColor: PlatformColor("systemBackground") }}>
+                                            <ListItem.Content>
+                                                <ListItem.Title style={{ fontSize: 20, color: PlatformColor("label") }}>{word["kanji"]}</ListItem.Title>
+                                                <ListItem.Subtitle style={{ marginTop: 5, fontSize: 15, color: PlatformColor("label") }}>{word["english"]}</ListItem.Subtitle>
+                                            </ListItem.Content>
+                                            {edit ? (<Icon
+                                                name="delete"
+                                                family="AntDesign"
+                                                size={theme.SIZES.BASE}
+                                                color="#E90000"
+                                            />) : (<ListItem.Chevron />)}
+                                        </ListItem>
+                                    )
+                                }
                             })}
+                            {displayed.length > 50 ? (
+                                <Button round color="info" shadowless size="large" style={{ marginTop: 20 }} onPress={() => { setMaxItems(maxItems + 50) }}>Load More</Button>
+                            ) : null}
+                            <Text style={{ textAlign: 'center', marginTop: 10, color: PlatformColor("label") }}>{context.state.length} words</Text>
                         </Block>
                     </Block>
                 </ScrollView>
@@ -142,7 +158,7 @@ const styles = StyleSheet.create({
     container: {
         padding: 14,
         justifyContent: 'flex-start',
-        backgroundColor: theme.COLORS.WHITE,
+        backgroundColor: PlatformColor("systemBackground"),
         width: width
     },
     searchMsg: {

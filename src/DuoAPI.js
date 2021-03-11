@@ -25,27 +25,6 @@ export default class DuoAPI {
         return result.data;
     }
 
-    async getLearnedWords_Old() {
-        const result = await axios({
-            url: this.baseUrl + "users/" + this.username,
-            method: "GET",
-            headers: {
-                "Authorization": "Bearer " + this.jwt
-            }
-        });
-
-        const data = result.data;
-        let words = [];
-
-        data.language_data["ja"].skills.forEach(topic => {
-            if(topic.learned){
-                words = words.concat(topic['words']);
-            }
-        });
-
-        return words;
-    }
-
     async getLearnedWords() {
         const result = await axios({
             url: this.baseUrl + "vocabulary/overview",

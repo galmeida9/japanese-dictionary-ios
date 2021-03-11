@@ -1,8 +1,8 @@
 import React from 'react';
-import { Dimensions, StyleSheet, ScrollView } from 'react-native';
+import { Dimensions, StyleSheet, ScrollView, PlatformColor, useColorScheme } from 'react-native';
 import { Text, Block, Input } from 'galio-framework';
 import theme from '../theme';
-import { ListItem } from 'react-native-elements'
+import { ListItem } from 'react-native-elements';
 import Spinner from 'react-native-loading-spinner-overlay';
 import GorgeousHeader from "react-native-gorgeous-header";
 
@@ -14,6 +14,7 @@ export default function Search(props) {
     const [loading, setLoading] = React.useState(false);
 
     const { navigation } = props;
+    const dark = useColorScheme() === "dark";
 
     const JishoApi = require('unofficial-jisho-api');
     const jisho = new JishoApi();
@@ -22,7 +23,6 @@ export default function Search(props) {
         setLoading(true);
         jisho.searchForPhrase(query.toLowerCase()).then((data) => {
             setResults(data);
-            console.log(data)
             setLoading(false);
         });
     }
@@ -60,7 +60,7 @@ export default function Search(props) {
             return (
                 <Block>
                     <Text style={styles.noResults}>No Results Found</Text>
-                    <Text style={{ marginTop: 10, textAlign: 'center' }}>You can search in english, hiragana, katakana, kanji and in romanji</Text>
+                    <Text style={{ marginTop: 10, textAlign: 'center', color: PlatformColor("label") }}>You can search in english, hiragana, katakana, kanji and in romanji</Text>
                 </Block>
             );
         }
@@ -79,15 +79,15 @@ export default function Search(props) {
         }
         else {
             return (
-                <ListItem key={i} bottomDivider onPress={() => { openDefinition(value) }}>
+                <ListItem key={i} bottomDivider onPress={() => { openDefinition(value) }} containerStyle={{ backgroundColor: PlatformColor("systemBackground") }}>
                     <ListItem.Content>
                         {/[a-zA-Z0-9]/.test(value["slug"].replace("-1", "")) ? (
-                            <ListItem.Title style={{ fontSize: 20 }}>{value["japanese"][0]["reading"]}</ListItem.Title>
+                            <ListItem.Title style={styles.listTitle}>{value["japanese"][0]["reading"]}</ListItem.Title>
                         ) : (
-                                <ListItem.Title style={{ fontSize: 20 }}>{value["slug"].replace("-1", "")}</ListItem.Title>
+                                <ListItem.Title style={styles.listTitle}>{value["slug"].replace("-1", "")}</ListItem.Title>
                             )}
                         {/[a-zA-Z0-9]/.test(value["slug"].replace("-1", "")) ? null : (
-                            <ListItem.Subtitle style={{ marginTop: 5, fontSize: 15 }}>{value["japanese"][0]["reading"]}</ListItem.Subtitle>
+                            <ListItem.Subtitle style={styles.listSubtitle}>{value["japanese"][0]["reading"]}</ListItem.Subtitle>
                         )}
                     </ListItem.Content>
                     <ListItem.Chevron />
@@ -96,12 +96,16 @@ export default function Search(props) {
         }
     }
 
+    console.log(PlatformColor("systemBackground"))
+
     return (
-        <Block safe flex style={{ backgroundColor: '#fff' }}>
+        <Block safe flex style={{ backgroundColor: PlatformColor("systemBackground") }}>
             <GorgeousHeader
                 title="Dictionary"
+                titleTextStyle={{ color: PlatformColor("label"), fontSize: 46, fontWeight: "bold" }}
                 subtitle="Japanese Dictionary"
-                menuImageSource={require("../../assets/hamburger_menu.png")}
+                subtitleTextStyle={{ color: PlatformColor("secondaryLabel") }}
+                menuImageSource={dark ? require("../../assets/menu_dark.png") : require("../../assets/hamburger_menu.png")}
                 menuImageStyle={styles.menu}
                 menuImageOnPress={() => navigation.openDrawer()}
                 searchBarStyle={{ width: 0, height: 0 }}
@@ -111,12 +115,15 @@ export default function Search(props) {
                 <Input
                     rounded
                     placeholder="Search Dictionary..."
-                    placeholderTextColor={theme.COLORS.INFO}
-                    style={{ borderColor: theme.COLORS.INFO }}
+                    placeholderTextColor={PlatformColor("systemBlue")}
+                    style={{ borderColor: PlatformColor("systemBlue") }}
+                    bgColor={PlatformColor("systemBackground")}
+                    color={PlatformColor("label")}
                     onChangeText={(text) => { setQuery(text); }}
                     returnKeyType={'search'}
                     onSubmitEditing={searchDict}
                     clearButtonMode="always"
+                    autoCapitalize='none'
                 />
             </Block>
 
@@ -135,17 +142,19 @@ const styles = StyleSheet.create({
     container: {
         padding: 14,
         justifyContent: 'flex-start',
-        backgroundColor: theme.COLORS.WHITE,
+        backgroundColor: PlatformColor("systemBackground"),
         width: width
     },
     searchMsg: {
         textAlign: 'center',
         marginTop: height / 4,
+        color: PlatformColor("label"),
     },
     noResults: {
         textAlign: 'center',
         marginTop: height / 4,
-        fontSize: 25
+        fontSize: 25,
+        color: PlatformColor("label"),
     },
     spinnerTextStyle: {
         color: '#FFF'
@@ -153,6 +162,15 @@ const styles = StyleSheet.create({
     menu: {
         height: 40,
         width: 30
+    },
+    listTitle: {
+        fontSize: 20,
+        color: PlatformColor("label")
+    },
+    listSubtitle: {
+        marginTop: 5,
+        fontSize: 15,
+        color: PlatformColor("secondaryLabel")
     }
 });
 

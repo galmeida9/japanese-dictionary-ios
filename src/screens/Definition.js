@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { View, Dimensions, StyleSheet, ScrollView } from 'react-native';
+import { View, Dimensions, StyleSheet, ScrollView, PlatformColor, useColorScheme } from 'react-native';
 import { Text, Block, Button } from 'galio-framework';
 import theme from '../theme';
 import GorgeousHeader from "react-native-gorgeous-header";
@@ -23,6 +23,8 @@ export default function Definition(props) {
 
     const { navigation, route } = props;
     const context = useContext(WordBankContext);
+    const dark = useColorScheme() === "dark";
+    const styles = makeStyle(dark);
 
     useEffect(() => {
         performSearch();
@@ -60,7 +62,7 @@ export default function Definition(props) {
     }
 
     const getWords = async () => {
-        if (context.state.japanese.filter(el => route.params.word == el.kanji).length > 0) {
+        if (context.state.filter(el => route.params.word == el.kanji).length > 0) {
             setWordBank(true);
         }
     }
@@ -80,8 +82,8 @@ export default function Definition(props) {
         return (
             <Card style={styles.card} key={index}>
                 <Card.Content>
-                    <Paragraph style={{ fontSize: 15, textAlign: 'center' }}>{example.parts_of_speech}</Paragraph>
-                    <Title style={{ fontSize: 30, textAlign: 'center' }}>{example.english_definitions.join(", ")}</Title>
+                    <Paragraph style={{ fontSize: 15, textAlign: 'center', color: PlatformColor("label") }}>{example.parts_of_speech}</Paragraph>
+                    <Title style={{ fontSize: 30, textAlign: 'center', color: PlatformColor("label") }}>{example.english_definitions.join(", ")}</Title>
                 </Card.Content>
             </Card>
         );
@@ -89,15 +91,16 @@ export default function Definition(props) {
 
     return (
         <Root>
-            <Block safe flex style={{ backgroundColor: '#fff' }}>
+            <Block safe flex style={{ backgroundColor: PlatformColor("systemBackground") }}>
                 <GorgeousHeader
                     title="Word Definition"
+                    titleTextStyle={{ color: PlatformColor("label"), fontSize: 46, fontWeight: "bold" }}
                     subtitle="Definition and Examples"
+                    subtitleTextStyle={{ color: PlatformColor("secondaryLabel"), paddingBottom: 10 }}
                     menuImageSource={require("../../assets/back.png")}
                     menuImageStyle={styles.back}
                     menuImageOnPress={() => navigation.goBack()}
                     searchBarStyle={{ width: 0, height: 0 }}
-                    subtitleTextStyle={{ paddingBottom: 10 }}
                 />
 
                 <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
@@ -109,12 +112,14 @@ export default function Definition(props) {
                         />
                     ) : (
                             <Block style={styles.container}>
-                                <Text style={{ fontSize: width / (route.params.word).length - 10, marginLeft: 10 }}>{route.params.word}</Text>
-                                <Text style={{ fontSize: 25, marginLeft: 10, marginTop: 10 }}>{meanings}</Text>
+                                <Text style={{ fontSize: width / (route.params.word).length - 10, marginLeft: 10, color: PlatformColor("label") }}>
+                                    {route.params.word}
+                                </Text>
+                                <Text style={{ fontSize: 25, marginLeft: 10, marginTop: 10, color: PlatformColor("label") }}>{meanings}</Text>
                                 {item.japanese != null && route.params.word != item.japanese[0].reading ? (
-                                    <Text style={{ fontSize: 25, marginTop: 10, marginLeft: 10 }}>{item.japanese[0].reading}</Text>
+                                    <Text style={{ fontSize: 25, marginTop: 10, marginLeft: 10, color: PlatformColor("label") }}>{item.japanese[0].reading}</Text>
                                 ) : null}
-                                <Text style={{ justifyContent: 'flex-end', fontSize: 20, marginTop: 10, marginLeft: 10 }}>{jlpt}</Text>
+                                <Text style={{ justifyContent: 'flex-end', fontSize: 20, marginTop: 10, marginLeft: 10, color: PlatformColor("label") }}>{jlpt}</Text>
                                 <View style={{ flexDirection: "row", marginTop: 20 }}>
                                     {wordBank ? (
                                         <Button round color="success" shadowless size="large">In Word Bank</Button>
@@ -137,7 +142,14 @@ export default function Definition(props) {
                                         })
                                     ) : <Text />}
                                 </Block>
-                                <Button round color="info" shadowless size="large" onPress={() => { navigation.navigate("Examples", { examples: examples }) }}>Show Examples</Button>
+                                <Button
+                                    round
+                                    color="info"
+                                    shadowless
+                                    size="large"
+                                    onPress={() => { navigation.navigate("Examples", { examples: examples }) }}>
+                                    Show Examples
+                                </Button>
                             </Block>
                         )}
                 </ScrollView>
@@ -146,43 +158,47 @@ export default function Definition(props) {
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        padding: 14,
-        justifyContent: 'flex-start',
-        backgroundColor: theme.COLORS.WHITE,
-        width: width,
-    },
-    cards: {
-        flex: 1,
-        backgroundColor: theme.COLORS.WHITE,
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-    },
-    card: {
-        borderWidth: 0,
-        backgroundColor: theme.COLORS.WHITE,
-        width: width - theme.SIZES.BASE * 2,
-        marginVertical: theme.SIZES.BASE * 0.875,
-    },
-    spinnerTextStyle: {
-        color: '#FFF'
-    },
-    modal: {
-        position: 'absolute',
-        padding: 20,
-        top: 100,
-        width: width - 40,
-        height: height - 500
-    },
-    gif: {
-        resizeMode: 'stretch',
-        width: width - 40,
-        height: height - 500
-    },
-    back: {
-        height: 30,
-        width: 30,
-    }
-});
+const makeStyle = (dark) => {
+    return (
+        StyleSheet.create({
+            container: {
+                padding: 14,
+                justifyContent: 'flex-start',
+                backgroundColor: PlatformColor("systemBackground"),
+                width: width,
+            },
+            cards: {
+                flex: 1,
+                backgroundColor: PlatformColor("systemBackground"),
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+            },
+            card: {
+                borderWidth: 0,
+                backgroundColor: dark ? "#141414" : "white",
+                width: width - theme.SIZES.BASE * 2,
+                marginVertical: theme.SIZES.BASE * 0.875,
+            },
+            spinnerTextStyle: {
+                color: '#FFF'
+            },
+            modal: {
+                position: 'absolute',
+                padding: 20,
+                top: 100,
+                width: width - 40,
+                height: height - 500
+            },
+            gif: {
+                resizeMode: 'stretch',
+                width: width - 40,
+                height: height - 500
+            },
+            back: {
+                height: 30,
+                width: 30,
+            }
+        })
+    );
+}
 

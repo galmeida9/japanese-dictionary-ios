@@ -27,7 +27,27 @@ const SIZES = {
   OPACITY: 0.8,
 };
 
+const DarkTheme = {
+  dark: true,
+  colors: {
+      background: "black",
+      text: 'white',
+      cards: '#141414',
+      subtitle: '#e3e3e3',
+  }
+};
+
+const LightTheme = {
+  dark: true,
+  colors: {
+      background: "white",
+      text: 'black',
+  }
+};
+
 export default {
   COLORS,
   SIZES,
+  DarkTheme,
+  LightTheme,
 };

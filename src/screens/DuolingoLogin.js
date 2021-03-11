@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { Dimensions, StyleSheet, ScrollView, Image } from 'react-native';
-import { Block, Input, Button, Icon } from 'galio-framework';
+import { Dimensions, StyleSheet, ScrollView, Image, PlatformColor, useColorScheme } from 'react-native';
+import { Block, Input, Button } from 'galio-framework';
 import theme from '../theme';
 import GorgeousHeader from "react-native-gorgeous-header";
 import WordBankContext from '../components/WordBankContext';
@@ -20,6 +20,8 @@ export default function DuolingoLogin(props) {
 
     const { navigation } = props;
     const context = useContext(WordBankContext);
+
+    const dark = useColorScheme() === "dark";
 
     const JishoApi = require('unofficial-jisho-api');
     const jisho = new JishoApi();
@@ -108,11 +110,12 @@ export default function DuolingoLogin(props) {
 
     return (
         <Root>
-            <Block safe flex style={{ backgroundColor: '#fff' }}>
+            <Block safe flex style={{ backgroundColor: PlatformColor("systemBackground") }}>
                 <GorgeousHeader
                     title="Duoling Login"
-                    subtitle="Import all your yours to your Word Bank"
-                    menuImageSource={require("../../assets/hamburger_menu.png")}
+                    titleTextStyle={{ color: PlatformColor("label"), fontSize: 46, fontWeight: "bold" }}
+                    subtitleTextStyle={{ color: PlatformColor("secondaryLabel") }}
+                    menuImageSource={dark ? require("../../assets/menu_dark.png") : require("../../assets/hamburger_menu.png")}
                     menuImageStyle={styles.menu}
                     menuImageOnPress={() => navigation.openDrawer()}
                     searchBarStyle={{ width: 0, height: 0 }}
@@ -129,22 +132,28 @@ export default function DuolingoLogin(props) {
                         <Input
                             rounded
                             placeholder="Username"
-                            placeholderTextColor={theme.COLORS.BLACK}
-                            style={{ borderColor: theme.COLORS.BLACK }}
+                            placeholderTextColor={PlatformColor("label")}
+                            style={{ borderColor: dark ? "white" : "black" }}
+                            bgColor={PlatformColor("systemBackground")}
+                            color={PlatformColor("label")}
                             onChangeText={(text) => { setUsername(text) }}
                             returnKeyType={'next'}
                             clearButtonMode="always"
+                            autoCapitalize='none'
                         />
                         <Input
                             rounded
                             password
                             viewPass
                             placeholder="Password"
-                            placeholderTextColor={theme.COLORS.BLACK}
-                            style={{ borderColor: theme.COLORS.BLACK }}
+                            placeholderTextColor={PlatformColor("label")}
+                            style={{ borderColor: dark ? "white" : "black" }}
+                            bgColor={PlatformColor("systemBackground")}
+                            color={PlatformColor("label")}
                             onChangeText={(text) => { setPasswords(text) }}
                             returnKeyType={'go'}
                             onSubmitEditing={login}
+                            autoCapitalize='none'
                         />
                         <Button round color="success" shadowless size="large" onPress={login}>Log In</Button>
                     </Block>
@@ -160,7 +169,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: theme.COLORS.WHITE,
+        backgroundColor: PlatformColor("systemBackground"),
         width: width
     },
     menu: {
@@ -176,4 +185,3 @@ const styles = StyleSheet.create({
         color: '#FFF'
     },
 });
-

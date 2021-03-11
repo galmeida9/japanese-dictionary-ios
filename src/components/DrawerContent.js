@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, Linking } from 'react-native';
+import { View, StyleSheet, Linking, PlatformColor, useColorScheme } from 'react-native';
 import {
-    useTheme,
     Title,
     Caption,
     Drawer,
@@ -17,11 +16,10 @@ import { Icon } from 'galio-framework';
 import theme from '../theme';
 
 export default function DrawerContent(props) {
-
-    const paperTheme = useTheme();
+    const dark = useColorScheme() === "dark";
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, backgroundColor: dark ? "#141414" : "white" }}>
             <View style={{ marginLeft: 15 }}>
                 <Title style={styles.title}>Japanese Dictionary</Title>
                 <Caption style={styles.caption}>Your study companion</Caption>
@@ -36,10 +34,11 @@ export default function DrawerContent(props) {
                                     name="language"
                                     family="font-awesome"
                                     size={theme.SIZES.BASE}
-                                    color={theme.COLORS.ICON}
+                                    color={PlatformColor("label")}
                                 />
                             )}
                             onPress={() => { props.navigation.navigate('Dictionary') }}
+                            labelStyle={{ color: PlatformColor("label") }}
                         />
                         <DrawerItem
                             label="Word Bank"
@@ -48,10 +47,11 @@ export default function DrawerContent(props) {
                                     name="database"
                                     family="font-awesome"
                                     size={theme.SIZES.BASE}
-                                    color={theme.COLORS.ICON}
+                                    color={PlatformColor("label")}
                                 />
                             )}
                             onPress={() => { props.navigation.navigate('Bank') }}
+                            labelStyle={{ color: PlatformColor("label") }}
                         />
                         <DrawerItem
                             label="Practice"
@@ -60,21 +60,28 @@ export default function DrawerContent(props) {
                                     name="pencil"
                                     family="font-awesome"
                                     size={theme.SIZES.BASE}
-                                    color={theme.COLORS.ICON}
+                                    color={PlatformColor("label")}
                                 />
                             )}
-                            onPress={() => {  }}
+                            onPress={() => { props.navigation.navigate('Practice') }}
+                            labelStyle={{ color: PlatformColor("label") }}
                         />
                     </Drawer.Section>
-                    <Drawer.Section title="Settings">
-                        <TouchableRipple>
+                    <Drawer.Section>
+                        <Text style={{ marginLeft: 18, marginTop: 20, color: PlatformColor("label") }}>Settings</Text>
+                        {/* <TouchableRipple>
                             <View style={styles.preference}>
                                 <Text>Dark Theme</Text>
                                 <View>
-                                    <Switch value={paperTheme.dark} />
+                                    <Switch
+                                        style={{ marginTop: -8 }}
+                                        color={theme.COLORS.INFO}
+                                        value={context.state.dark}
+                                        onValueChange={() => { context.setTheme(!context.state.dark); setDark(!dark) }}
+                                    />
                                 </View>
                             </View>
-                        </TouchableRipple>
+                        </TouchableRipple> */}
                         <DrawerItem
                             label="Duolingo Login"
                             icon={() => (
@@ -82,10 +89,11 @@ export default function DrawerContent(props) {
                                     name="sign-in"
                                     family="font-awesome"
                                     size={theme.SIZES.BASE}
-                                    color={theme.COLORS.ICON}
+                                    color={PlatformColor("label")}
                                 />
                             )}
                             onPress={() => { props.navigation.navigate('DuolingoLogin') }}
+                            labelStyle={{ color: PlatformColor("label") }}
                         />
                     </Drawer.Section>
                 </View>
@@ -98,10 +106,11 @@ export default function DrawerContent(props) {
                             name="copyright"
                             family="font-awesome"
                             size={theme.SIZES.BASE}
-                            color={theme.COLORS.ICON}
+                            color={PlatformColor("label")}
                         />
                     )}
                     onPress={() => Linking.openURL('http://bit.ly/Gabriel-Almeida')}
+                    labelStyle={{ color: PlatformColor("label") }}
                 />
             </Drawer.Section>
         </View>
@@ -120,10 +129,12 @@ const styles = StyleSheet.create({
         marginTop: 60,
         fontWeight: 'bold',
         lineHeight: 45,
+        color: PlatformColor("label")
     },
     caption: {
         fontSize: 14,
         lineHeight: 14,
+        color: PlatformColor("secondaryLabel")
     },
     drawerSection: {
         marginTop: 15,

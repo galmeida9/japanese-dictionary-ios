@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { View, Dimensions, StyleSheet, ScrollView, Image, Text } from 'react-native';
+import { View, Dimensions, StyleSheet, ScrollView, Image, Text, PlatformColor, useColorScheme } from 'react-native';
 import { Block, Button } from 'galio-framework';
 import theme from '../theme';
 import GorgeousHeader from "react-native-gorgeous-header";
@@ -19,11 +19,13 @@ export default function KanjiDefinition(props) {
     const [wordBank, setWordBank] = React.useState(false);
 
     const context = useContext(WordBankContext);
+    const { navigation, route } = props;
+    const dark = useColorScheme() === "dark";
+    const styles = makeStyle(dark);
 
     const JishoApi = require('unofficial-jisho-api');
     const jisho = new JishoApi();
 
-    const { navigation, route } = props;
 
     useEffect(() => {
         performSearch();
@@ -68,7 +70,7 @@ export default function KanjiDefinition(props) {
     }
 
     const getWords = async () => {
-        if (context.state.japanese.filter(el => route.params.word == el.kanji).length > 0) {
+        if (context.state.filter(el => route.params.word == el.kanji).length > 0) {
             setWordBank(true);
         }
     }
@@ -77,9 +79,9 @@ export default function KanjiDefinition(props) {
         return (
             <Card style={styles.card} key={index}>
                 <Card.Content>
-                    <Title style={{ fontSize: 30, textAlign: 'center' }}>{example.example}</Title>
-                    <Paragraph style={{ fontSize: 15, textAlign: 'center' }}>{example.reading}</Paragraph>
-                    <Paragraph style={{ fontSize: 15, textAlign: 'center' }}>{example.meaning}</Paragraph>
+                    <Title style={{ fontSize: 30, textAlign: 'center', color: PlatformColor("label") }}>{example.example}</Title>
+                    <Paragraph style={{ fontSize: 15, textAlign: 'center', color: PlatformColor("label") }}>{example.reading}</Paragraph>
+                    <Paragraph style={{ fontSize: 15, textAlign: 'center', color: PlatformColor("label") }}>{example.meaning}</Paragraph>
                 </Card.Content>
             </Card>
         );
@@ -90,15 +92,16 @@ export default function KanjiDefinition(props) {
 
     return (
         <Root>
-            <Block safe flex style={{ backgroundColor: '#fff' }}>
+            <Block safe flex style={{ backgroundColor: PlatformColor("systemBackground") }}>
                 <GorgeousHeader
                     title="Kanji Definition"
+                    titleTextStyle={{ color: PlatformColor("label"), fontSize: 46, fontWeight: "bold" }}
                     subtitle="Definition, Stroke Order and Examples"
+                    subtitleTextStyle={{ color: PlatformColor("secondaryLabel"), paddingBottom: 10 }}
                     menuImageSource={require("../../assets/back.png")}
                     menuImageStyle={styles.back}
                     menuImageOnPress={() => navigation.goBack()}
                     searchBarStyle={{ width: 0, height: 0 }}
-                    subtitleTextStyle={{ paddingBottom: 10 }}
                 />
 
                 <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
@@ -112,19 +115,23 @@ export default function KanjiDefinition(props) {
                             <Block style={styles.container}>
                                 <View style={{ flexDirection: "row" }}>
                                     <View style={{ flex: 1 }}>
-                                        <Text style={{ justifyContent: 'flex-start', fontSize: 150 }}>{route.params.word}</Text>
+                                        <Text style={{ justifyContent: 'flex-start', fontSize: 150, color: PlatformColor("label") }}>{route.params.word}</Text>
                                     </View>
                                     <View style={{ flex: 1 }}>
-                                        <Text style={{ justifyContent: 'flex-end', fontSize: 35 }}>{meanings}</Text>
-                                        {item.kunyomi != null ? (<Text style={{ justifyContent: 'flex-end', fontSize: 25, marginTop: 10 }}>{item.kunyomi[0]}</Text>) : (<Text />)}
+                                        <Text style={{ justifyContent: 'flex-end', fontSize: 35, color: PlatformColor("label") }}>{meanings}</Text>
+                                        {item.kunyomi != null ? (
+                                            <Text style={{ justifyContent: 'flex-end', fontSize: 25, marginTop: 10, color: PlatformColor("label") }}>{item.kunyomi[0]}</Text>
+                                        ) : (<Text />)}
                                     </View>
                                 </View>
                                 <View style={{ flexDirection: "row", marginTop: 10 }}>
                                     <View style={{ flex: 1 }}>
-                                        <Text style={{ justifyContent: 'flex-start', fontSize: 20, marginLeft: 25 }}>{item.strokeCount} strokes</Text>
+                                        <Text style={{ justifyContent: 'flex-start', fontSize: 20, marginLeft: 25, color: PlatformColor("label") }}>
+                                            {item.strokeCount} strokes
+                                        </Text>
                                     </View>
                                     <View style={{ flex: 1 }}>
-                                        <Text style={{ justifyContent: 'flex-end', fontSize: 20 }}>JLPT {item.jlptLevel}</Text>
+                                        <Text style={{ justifyContent: 'flex-end', fontSize: 20, color: PlatformColor("label") }}>JLPT {item.jlptLevel}</Text>
                                     </View>
                                 </View>
                                 <View style={{ flexDirection: "row", marginTop: 20 }}>
@@ -150,7 +157,9 @@ export default function KanjiDefinition(props) {
                                         })
                                     ) : <Text />}
                                 </Block>
-                                <Button round color="info" shadowless size="large" onPress={() => { navigation.navigate("Examples", { examples: examples }) }}>Show Examples</Button>
+                                <Button round color="info" shadowless size="large" onPress={() => { navigation.navigate("Examples", { examples: examples }) }}>
+                                    Show Examples
+                                </Button>
                                 <Provider>
                                     <Portal>
                                         <Modal visible={strokes} onDismiss={hideModal} contentContainerStyle={styles.modal}>
@@ -166,43 +175,46 @@ export default function KanjiDefinition(props) {
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        padding: 14,
-        justifyContent: 'flex-start',
-        backgroundColor: theme.COLORS.WHITE,
-        width: width,
-    },
-    cards: {
-        flex: 1,
-        backgroundColor: theme.COLORS.WHITE,
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-    },
-    card: {
-        borderWidth: 0,
-        backgroundColor: theme.COLORS.WHITE,
-        width: width - theme.SIZES.BASE * 2,
-        marginVertical: theme.SIZES.BASE * 0.875,
-    },
-    spinnerTextStyle: {
-        color: '#FFF'
-    },
-    modal: {
-        position: 'absolute',
-        padding: 20,
-        top: 100,
-        width: width - 40,
-        height: height - 500
-    },
-    gif: {
-        resizeMode: 'stretch',
-        width: width - 40,
-        height: height - 500
-    },
-    back: {
-        height: 30,
-        width: 30,
-    }
-});
-
+const makeStyle = (dark) => {
+    return (
+        StyleSheet.create({
+            container: {
+                padding: 14,
+                justifyContent: 'flex-start',
+                backgroundColor: PlatformColor("systemBackground"),
+                width: width,
+            },
+            cards: {
+                flex: 1,
+                backgroundColor: PlatformColor("systemBackground"),
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+            },
+            card: {
+                borderWidth: 0,
+                backgroundColor: dark ? "#141414" : "white",
+                width: width - theme.SIZES.BASE * 2,
+                marginVertical: theme.SIZES.BASE * 0.875,
+            },
+            spinnerTextStyle: {
+                color: '#FFF'
+            },
+            modal: {
+                position: 'absolute',
+                padding: 20,
+                top: 100,
+                width: width - 40,
+                height: height - 500
+            },
+            gif: {
+                resizeMode: 'stretch',
+                width: width - 40,
+                height: height - 500
+            },
+            back: {
+                height: 30,
+                width: 30,
+            }
+        })        
+    );
+}
