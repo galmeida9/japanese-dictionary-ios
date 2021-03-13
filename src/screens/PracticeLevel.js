@@ -48,7 +48,7 @@ export default function PracticeLevel(props) {
                                     >
                                         <ListItem.Content>
                                             <ListItem.Title style={{ fontSize: 20, color: PlatformColor("label") }}>{value}</ListItem.Title>
-                                            <ListItem.Subtitle style={{ marginTop: 5, fontSize: 15, color: PlatformColor("label") }}>Practice {value} words</ListItem.Subtitle>
+                                            <ListItem.Subtitle style={{ marginTop: 5, fontSize: 15, color: PlatformColor("secondaryLabel") }}>Practice {value} words</ListItem.Subtitle>
                                         </ListItem.Content>
                                         <ListItem.Chevron />
                                     </ListItem>
@@ -67,7 +67,7 @@ export default function PracticeLevel(props) {
                             >
                                 <ListItem.Content>
                                     <ListItem.Title style={{ fontSize: 20, color: PlatformColor("label") }}>{context.state.length}</ListItem.Title>
-                                    <ListItem.Subtitle style={{ marginTop: 5, fontSize: 15, color: PlatformColor("label") }}>Practice {context.state.length} words</ListItem.Subtitle>
+                                    <ListItem.Subtitle style={{ marginTop: 5, fontSize: 15, color: PlatformColor("secondaryLabel") }}>Practice {context.state.length} words</ListItem.Subtitle>
                                 </ListItem.Content>
                                 <ListItem.Chevron />
                             </ListItem>

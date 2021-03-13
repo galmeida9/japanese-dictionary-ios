@@ -4,6 +4,8 @@ import Home from './src/components/Home';
 import Bank from './src/components/Bank';
 import DuolingoLogin from './src/screens/DuolingoLogin';
 import Practice from './src/components/Practice';
+import FlashCardsWrapper from './src/components/FlashCardsWrapper';
+import Study from './src/components/Study';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import DrawerContent from './src/components/DrawerContent';
@@ -74,7 +76,9 @@ export default function App() {
                     <Drawer.Screen name="Dictionary" component={Home} />
                     <Drawer.Screen name="Bank" component={Bank} />
                     <Drawer.Screen name="DuolingoLogin" component={DuolingoLogin} />
+                    <Drawer.Screen name="FlashCardsWrapper" component={FlashCardsWrapper} />
                     <Drawer.Screen name="Practice" component={Practice} />
+                    <Drawer.Screen name="Study" component={Study} />
                 </Drawer.Navigator>
             </NavigationContainer>
         </WordBankContext.Provider>

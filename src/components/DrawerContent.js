@@ -12,6 +12,7 @@ import {
 } from '@react-navigation/drawer';
 import { Icon } from 'galio-framework';
 import theme from '../theme';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function DrawerContent(props) {
     const dark = useColorScheme() === "dark";
@@ -52,6 +53,15 @@ export default function DrawerContent(props) {
                             labelStyle={{ color: PlatformColor("label") }}
                         />
                         <DrawerItem
+                            label="Flash Cards"
+                            icon={() => (
+                                <MaterialCommunityIcons name="cards" size={theme.SIZES.BASE+4} color={PlatformColor("label")} />
+                            )}
+                            onPress={() => { props.navigation.navigate('FlashCardsWrapper') }}
+                            labelStyle={{ color: PlatformColor("label"), marginLeft: -4 }}
+                            style={{marginLeft: 8}}
+                        />
+                        <DrawerItem
                             label="Practice"
                             icon={() => (
                                 <Icon
@@ -62,6 +72,19 @@ export default function DrawerContent(props) {
                                 />
                             )}
                             onPress={() => { props.navigation.navigate('Practice') }}
+                            labelStyle={{ color: PlatformColor("label") }}
+                        />
+                        <DrawerItem
+                            label="Study Material"
+                            icon={() => (
+                                <Icon
+                                    name="book"
+                                    family="font-awesome"
+                                    size={theme.SIZES.BASE}
+                                    color={PlatformColor("label")}
+                                />
+                            )}
+                            onPress={() => { props.navigation.navigate('Study') }}
                             labelStyle={{ color: PlatformColor("label") }}
                         />
                     </Drawer.Section>

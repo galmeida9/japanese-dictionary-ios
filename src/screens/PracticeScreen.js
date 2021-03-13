@@ -182,9 +182,9 @@ const makeStyle = (dark) => {
                 backgroundColor: PlatformColor("systemBackground"),
                 width: width
             },
-            menu: {
-                height: 40,
-                width: 30
+            back: {
+                height: 30,
+                width: 30,
             },
             card: {
                 borderWidth: 0,

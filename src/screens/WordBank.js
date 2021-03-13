@@ -130,7 +130,7 @@ export default function WordBank(props) {
                                         <ListItem key={i} bottomDivider onPress={() => { listFunction(word) }} containerStyle={{ backgroundColor: PlatformColor("systemBackground") }}>
                                             <ListItem.Content>
                                                 <ListItem.Title style={{ fontSize: 20, color: PlatformColor("label") }}>{word["kanji"]}</ListItem.Title>
-                                                <ListItem.Subtitle style={{ marginTop: 5, fontSize: 15, color: PlatformColor("label") }}>{word["english"]}</ListItem.Subtitle>
+                                                <ListItem.Subtitle style={{ marginTop: 5, fontSize: 15, color: PlatformColor("secondaryLabel") }}>{word["english"]}</ListItem.Subtitle>
                                             </ListItem.Content>
                                             {edit ? (<Icon
                                                 name="delete"
