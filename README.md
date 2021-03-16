@@ -1,6 +1,10 @@
 # Japanese Dictionary IOS
 
-And IOS app based on my previous windows app, available in [this repo](https://github.com/galmeida9/japanese_dictionary). This app was developed using React Native and Expo.
+An IOS app based on my previous windows app, available in [this repo](https://github.com/galmeida9/japanese_dictionary). This app was developed using React Native and Expo.
+
+<p align="center">
+<img src="./assets/demo/app.png">
+</p>
 
 ## Features
 
@@ -14,7 +18,7 @@ Searches in english, hiragana, katakana, kanji and romanji in the Jisho.org dict
 
 ### Word Bank
 
-Stores all your added words, giving you tge ability to search them, consult them, check their definition and delete them.
+Stores all your added words, giving you the ability to search them, consult them, check their definition and delete them.
 
 <p align="center">
 <img src="./assets/demo/iosapp_wordbank.gif" height="600">

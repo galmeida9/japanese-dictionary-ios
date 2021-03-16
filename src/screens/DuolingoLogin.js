@@ -110,6 +110,7 @@ export default function DuolingoLogin(props) {
                 <GorgeousHeader
                     title="Duolingo Login"
                     titleTextStyle={{ color: PlatformColor("label"), fontSize: 46, fontWeight: "bold" }}
+                    subtitle="Import your learned words from Duolingo"
                     subtitleTextStyle={{ color: PlatformColor("secondaryLabel") }}
                     menuImageSource={dark ? require("../../assets/menu_dark.png") : require("../../assets/hamburger_menu.png")}
                     menuImageStyle={styles.menu}
