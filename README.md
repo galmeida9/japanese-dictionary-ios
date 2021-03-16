@@ -1,4 +1,4 @@
-# Japanese Dictionary IOS
+<h1><img src="./assets/icon_round.png" height="50" style="vertical-align:middle"> Japanese Dictionary IOS</h1>
 
 An IOS app based on my previous windows app, available in [this repo](https://github.com/galmeida9/japanese_dictionary). This app was developed using React Native and Expo.
 
