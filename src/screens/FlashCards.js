@@ -61,10 +61,41 @@ export default function FlashCards(props) {
         })
     }, [isFocused])
 
+    const wrongWord = () => {
+        context.addWrong(currWord);
+        nextWord();
+    }
+
+    const correctWord = () => {
+        if (context.checkWrong(currWord.kanji)) {
+            context.removeWrong(currWord.kanji);
+        }
+
+        nextWord();
+    }
+
+    const nextWord = () => {
+        if (value >= 90) {
+            flipCard();
+        }
+
+        getRandomWord();
+    }
+
     const getRandomWord = () => {
-        let index = Math.floor(Math.random() * context.state.length);
-        setCurrWord(context.state[index]);
-        setEnglish(context.state[index].english.split(",")[0])
+        const eps = 0.7;
+        let prob = Math.random();
+
+        if (prob <= 1 - eps && context.wrong.length > 0) {
+            let index = Math.floor(Math.random() * context.wrong.length);
+            setCurrWord(context.wrong[index]);
+            setEnglish(context.wrong[index].english.split(",")[0])
+        }
+        else {
+            let index = Math.floor(Math.random() * context.state.length);
+            setCurrWord(context.state[index]);
+            setEnglish(context.state[index].english.split(",")[0])
+        }
     }
 
     const flipCard = () => {
@@ -84,14 +115,6 @@ export default function FlashCards(props) {
                 useNativeDriver: true
             }).start();
         }
-    }
-
-    const nextWord = () => {
-        if (value >= 90) {
-            flipCard();
-        }
-
-        getRandomWord();
     }
 
     return (
@@ -153,7 +176,7 @@ export default function FlashCards(props) {
                         iconFamily="font-awesome"
                         iconSize={30}
                         color={dark ? "rgb(255, 69, 58)" : "rgb(255, 59, 48)"}
-                        onPress={nextWord}
+                        onPress={wrongWord}
                         shadowless
                     >
                     </Button>
@@ -164,7 +187,7 @@ export default function FlashCards(props) {
                         iconFamily="font-awesome"
                         iconSize={30}
                         color={dark ? "rgb(48, 209, 88)" : "rgb(52, 199, 89)"}
-                        onPress={nextWord}
+                        onPress={correctWord}
                         shadowless
                     >
                     </Button>

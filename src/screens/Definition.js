@@ -93,7 +93,7 @@ export default function Definition(props) {
         <Root>
             <Block safe flex style={{ backgroundColor: PlatformColor("systemBackground") }}>
                 <GorgeousHeader
-                    title="Word Definition"
+                    title="Definition"
                     titleTextStyle={{ color: PlatformColor("label"), fontSize: 46, fontWeight: "bold" }}
                     subtitle="Definition and Examples"
                     subtitleTextStyle={{ color: PlatformColor("secondaryLabel"), paddingBottom: 10 }}

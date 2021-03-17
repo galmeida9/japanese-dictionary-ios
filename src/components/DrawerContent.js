@@ -33,7 +33,7 @@ export default function DrawerContent(props) {
                                     name="language"
                                     family="font-awesome"
                                     size={theme.SIZES.BASE}
-                                    color={PlatformColor("label")}
+                                    color={dark ? "white" : "black"}
                                 />
                             )}
                             onPress={() => { props.navigation.navigate('Dictionary') }}
@@ -46,7 +46,7 @@ export default function DrawerContent(props) {
                                     name="database"
                                     family="font-awesome"
                                     size={theme.SIZES.BASE}
-                                    color={PlatformColor("label")}
+                                    color={dark ? "white" : "black"}
                                 />
                             )}
                             onPress={() => { props.navigation.navigate('Bank') }}
@@ -55,7 +55,7 @@ export default function DrawerContent(props) {
                         <DrawerItem
                             label="Flash Cards"
                             icon={() => (
-                                <MaterialCommunityIcons name="cards" size={theme.SIZES.BASE+4} color={PlatformColor("label")} />
+                                <MaterialCommunityIcons name="cards" size={theme.SIZES.BASE+4} color={dark ? "white" : "black"} />
                             )}
                             onPress={() => { props.navigation.navigate('FlashCardsWrapper') }}
                             labelStyle={{ color: PlatformColor("label"), marginLeft: -4 }}
@@ -68,7 +68,7 @@ export default function DrawerContent(props) {
                                     name="pencil"
                                     family="font-awesome"
                                     size={theme.SIZES.BASE}
-                                    color={PlatformColor("label")}
+                                    color={dark ? "white" : "black"}
                                 />
                             )}
                             onPress={() => { props.navigation.navigate('Practice') }}
@@ -81,7 +81,7 @@ export default function DrawerContent(props) {
                                     name="book"
                                     family="font-awesome"
                                     size={theme.SIZES.BASE}
-                                    color={PlatformColor("label")}
+                                    color={dark ? "white" : "black"}
                                 />
                             )}
                             onPress={() => { props.navigation.navigate('Study') }}
@@ -97,7 +97,7 @@ export default function DrawerContent(props) {
                                     name="sign-in"
                                     family="font-awesome"
                                     size={theme.SIZES.BASE}
-                                    color={PlatformColor("label")}
+                                    color={dark ? "white" : "black"}
                                 />
                             )}
                             onPress={() => { props.navigation.navigate('DuolingoLogin') }}
@@ -114,7 +114,7 @@ export default function DrawerContent(props) {
                             name="heart"
                             family="font-awesome"
                             size={theme.SIZES.BASE}
-                            color={PlatformColor("label")}
+                            color={dark ? "white" : "black"}
                         />
                     )}
                     onPress={() => Linking.openURL('http://bit.ly/Gabriel-Almeida')}

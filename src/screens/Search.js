@@ -115,10 +115,10 @@ export default function Search(props) {
                 <Input
                     rounded
                     placeholder="Search Dictionary..."
-                    placeholderTextColor={PlatformColor("systemBlue")}
+                    placeholderTextColor={dark ? "rgb(10, 132, 255)" : "rgb(0, 122, 255)"}
                     style={{ borderColor: PlatformColor("systemBlue") }}
-                    bgColor={PlatformColor("systemBackground")}
-                    color={PlatformColor("label")}
+                    bgColor={dark ? "black" : "white"}
+                    color={dark ? "white" : "black"}
                     onChangeText={(text) => { setQuery(text); }}
                     returnKeyType={'search'}
                     onSubmitEditing={searchDict}
