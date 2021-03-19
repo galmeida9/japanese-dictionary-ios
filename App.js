@@ -28,7 +28,6 @@ export default function App() {
         try {
             let newWords = await AsyncStorage.getItem("words");
             let newWrongWords = await AsyncStorage.getItem("wrongWords");
-            console.log(newWrongWords)
 
             if (newWords !== null) {
                 setWords(JSON.parse(newWords));

@@ -150,10 +150,10 @@ export default function PracticeScreen(props) {
                                 <Input
                                     rounded
                                     placeholder="Type answer"
-                                    placeholderTextColor={PlatformColor("label")}
+                                    placeholderTextColor={dark ? "white" : "black"}
                                     style={{ borderColor: PlatformColor("label") }}
                                     bgColor={dark ? "#141414" : "white"}
-                                    color={PlatformColor("label")}
+                                    color={dark ? "white" : "black"}
                                     onChangeText={(text) => { setAnswer(text.toLowerCase()) }}
                                     returnKeyType={'next'}
                                     onSubmitEditing={checkInput}

@@ -108,10 +108,10 @@ export default function WordBank(props) {
                     <Input
                         rounded
                         placeholder="Search Word Bank..."
-                        placeholderTextColor={PlatformColor("systemBlue")}
+                        placeholderTextColor={dark ? "rgb(10, 132, 255)" : "rgb(0, 122, 255)"}
                         style={{ borderColor: PlatformColor("systemBlue"), justifyContent: 'flex-start', width: width - 160 }}
-                        bgColor={PlatformColor("systemBackground")}
-                        color={PlatformColor("label")}
+                        bgColor={dark ? "black" : "white"}
+                        color={dark ? "white" : "black"}
                         onChangeText={(text) => { setQuery(text) }}
                         returnKeyType={'search'}
                         onSubmitEditing={searchWord}

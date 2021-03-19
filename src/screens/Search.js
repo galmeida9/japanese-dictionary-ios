@@ -96,8 +96,6 @@ export default function Search(props) {
         }
     }
 
-    console.log(PlatformColor("systemBackground"))
-
     return (
         <Block safe flex style={{ backgroundColor: PlatformColor("systemBackground") }}>
             <GorgeousHeader

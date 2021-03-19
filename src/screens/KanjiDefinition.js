@@ -35,6 +35,7 @@ export default function KanjiDefinition(props) {
     const performSearch = async () => {
         setLoading(true);
         let data = await jisho.searchForKanji(route.params.word);
+        console.log(data);
         let data2 = await jisho.searchForExamples(route.params.word);
 
         const newItem = JSON.parse(JSON.stringify(data, null, 2));

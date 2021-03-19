@@ -129,10 +129,10 @@ export default function DuolingoLogin(props) {
                         <Input
                             rounded
                             placeholder="Username"
-                            placeholderTextColor={PlatformColor("label")}
+                            placeholderTextColor={dark ? "white" : "black"}
                             style={{ borderColor: dark ? "white" : "black" }}
-                            bgColor={PlatformColor("systemBackground")}
-                            color={PlatformColor("label")}
+                            bgColor={dark ? "black" : "white"}
+                            color={dark ? "white" : "black"}
                             onChangeText={(text) => { setUsername(text) }}
                             returnKeyType={'next'}
                             clearButtonMode="always"
@@ -143,10 +143,10 @@ export default function DuolingoLogin(props) {
                             password
                             viewPass
                             placeholder="Password"
-                            placeholderTextColor={PlatformColor("label")}
+                            placeholderTextColor={dark ? "white" : "black"}
                             style={{ borderColor: dark ? "white" : "black" }}
-                            bgColor={PlatformColor("systemBackground")}
-                            color={PlatformColor("label")}
+                            bgColor={dark ? "black" : "white"}
+                            color={dark ? "white" : "black"}
                             onChangeText={(text) => { setPasswords(text) }}
                             returnKeyType={'go'}
                             onSubmitEditing={login}
